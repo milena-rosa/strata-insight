@@ -1,29 +1,29 @@
-import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp, ChevronsUpDown, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import type { GeoSample } from '@/data/mockData';
+import { AlertTriangle, CheckCircle, ChevronDown, ChevronsUpDown, ChevronUp, XCircle } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { GeoSample } from '@/data/mockData'
+import { cn } from '@/lib/utils'
 
 interface Column<T> {
-  key: keyof T;
-  label: string;
-  unit?: string;
-  format?: (value: T[keyof T]) => string;
-  sortable?: boolean;
-  width?: string;
+  key: keyof T
+  label: string
+  unit?: string
+  format?: (value: T[keyof T]) => string
+  sortable?: boolean
+  width?: string
 }
 
 interface GeoTableProps<T extends { id: string; status?: string }> {
-  data: T[];
-  columns: Column<T>[];
-  isLoading?: boolean;
-  pageSize?: number;
-  className?: string;
-  onRowClick?: (row: T) => void;
+  data: T[]
+  columns: Column<T>[]
+  isLoading?: boolean
+  pageSize?: number
+  className?: string
+  onRowClick?: (row: T) => void
 }
 
-type SortDirection = 'asc' | 'desc' | null;
+type SortDirection = 'asc' | 'desc' | null
 
 export function GeoTable<T extends { id: string; status?: string }>({
   data,
@@ -33,64 +33,64 @@ export function GeoTable<T extends { id: string; status?: string }>({
   className = '',
   onRowClick,
 }: GeoTableProps<T>) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [sortColumn, setSortColumn] = useState<keyof T | null>(null)
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null)
 
   const sortedData = useMemo(() => {
-    if (!sortColumn || !sortDirection) return data;
+    if (!sortColumn || !sortDirection) return data
 
     return [...data].sort((a, b) => {
-      const aVal = a[sortColumn];
-      const bVal = b[sortColumn];
+      const aVal = a[sortColumn]
+      const bVal = b[sortColumn]
 
-      if (aVal === bVal) return 0;
-      if (aVal === null || aVal === undefined) return 1;
-      if (bVal === null || bVal === undefined) return -1;
+      if (aVal === bVal) return 0
+      if (aVal === null || aVal === undefined) return 1
+      if (bVal === null || bVal === undefined) return -1
 
-      const comparison = aVal < bVal ? -1 : 1;
-      return sortDirection === 'asc' ? comparison : -comparison;
-    });
-  }, [data, sortColumn, sortDirection]);
+      const comparison = aVal < bVal ? -1 : 1
+      return sortDirection === 'asc' ? comparison : -comparison
+    })
+  }, [data, sortColumn, sortDirection])
 
   const paginatedData = useMemo(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    return sortedData.slice(startIndex, startIndex + pageSize);
-  }, [sortedData, currentPage, pageSize]);
+    const startIndex = (currentPage - 1) * pageSize
+    return sortedData.slice(startIndex, startIndex + pageSize)
+  }, [sortedData, currentPage, pageSize])
 
-  const totalPages = Math.ceil(data.length / pageSize);
+  const totalPages = Math.ceil(data.length / pageSize)
 
   const handleSort = (key: keyof T) => {
     if (sortColumn === key) {
-      if (sortDirection === 'asc') setSortDirection('desc');
+      if (sortDirection === 'asc') setSortDirection('desc')
       else if (sortDirection === 'desc') {
-        setSortColumn(null);
-        setSortDirection(null);
+        setSortColumn(null)
+        setSortDirection(null)
       }
     } else {
-      setSortColumn(key);
-      setSortDirection('asc');
+      setSortColumn(key)
+      setSortDirection('asc')
     }
-  };
+  }
 
   const getSortIcon = (key: keyof T) => {
-    if (sortColumn !== key) return <ChevronsUpDown className="h-3 w-3 opacity-50" />;
-    if (sortDirection === 'asc') return <ChevronUp className="h-3 w-3" />;
-    return <ChevronDown className="h-3 w-3" />;
-  };
+    if (sortColumn !== key) return <ChevronsUpDown className="h-3 w-3 opacity-50" />
+    if (sortDirection === 'asc') return <ChevronUp className="h-3 w-3" />
+    return <ChevronDown className="h-3 w-3" />
+  }
 
   const getStatusIcon = (status?: string) => {
     switch (status) {
       case 'valid':
-        return <CheckCircle className="h-4 w-4 text-accent" aria-label="Válido" />;
+        return <CheckCircle className="h-4 w-4 text-accent" aria-label="Válido" />
       case 'warning':
-        return <AlertTriangle className="h-4 w-4 text-strata-amber" aria-label="Alerta" />;
+        return <AlertTriangle className="h-4 w-4 text-strata-amber" aria-label="Alerta" />
       case 'error':
-        return <XCircle className="h-4 w-4 text-destructive" aria-label="Erro" />;
+        return <XCircle className="h-4 w-4 text-destructive" aria-label="Erro" />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -120,7 +120,7 @@ export function GeoTable<T extends { id: string; status?: string }>({
           </table>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -137,7 +137,7 @@ export function GeoTable<T extends { id: string; status?: string }>({
                   key={String(col.key)}
                   className={cn(
                     'p-3 text-left',
-                    col.sortable !== false && 'cursor-pointer select-none hover:bg-muted/30 transition-colors'
+                    col.sortable !== false && 'cursor-pointer select-none hover:bg-muted/30 transition-colors',
                   )}
                   style={col.width ? { width: col.width } : undefined}
                   onClick={() => col.sortable !== false && handleSort(col.key)}
@@ -163,27 +163,27 @@ export function GeoTable<T extends { id: string; status?: string }>({
                   'transition-colors',
                   onRowClick && 'cursor-pointer',
                   row.status === 'warning' && 'bg-strata-amber/5',
-                  row.status === 'error' && 'bg-destructive/5'
+                  row.status === 'error' && 'bg-destructive/5',
                 )}
                 onClick={() => onRowClick?.(row)}
                 role={onRowClick ? 'row button' : 'row'}
                 tabIndex={onRowClick ? 0 : undefined}
                 onKeyDown={(e) => {
                   if (onRowClick && (e.key === 'Enter' || e.key === ' ')) {
-                    e.preventDefault();
-                    onRowClick(row);
+                    e.preventDefault()
+                    onRowClick(row)
                   }
                 }}
               >
                 <td className="p-3 text-center">{getStatusIcon(row.status)}</td>
                 {columns.map((col) => {
-                  const value = row[col.key];
-                  const displayValue = col.format ? col.format(value) : String(value ?? '—');
+                  const value = row[col.key]
+                  const displayValue = col.format ? col.format(value) : String(value ?? '—')
                   return (
                     <td key={String(col.key)} className="p-3 tabular-nums">
                       {displayValue}
                     </td>
-                  );
+                  )
                 })}
               </tr>
             ))}
@@ -195,7 +195,8 @@ export function GeoTable<T extends { id: string; status?: string }>({
       {totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-border px-4 py-3">
           <p className="text-sm text-muted-foreground">
-            Mostrando {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, data.length)} de {data.length} registros
+            Mostrando {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, data.length)} de{' '}
+            {data.length} registros
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -209,15 +210,15 @@ export function GeoTable<T extends { id: string; status?: string }>({
             </Button>
             <div className="flex items-center gap-1">
               {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
-                let pageNum: number;
+                let pageNum: number
                 if (totalPages <= 5) {
-                  pageNum = i + 1;
+                  pageNum = i + 1
                 } else if (currentPage <= 3) {
-                  pageNum = i + 1;
+                  pageNum = i + 1
                 } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
+                  pageNum = totalPages - 4 + i
                 } else {
-                  pageNum = currentPage - 2 + i;
+                  pageNum = currentPage - 2 + i
                 }
 
                 return (
@@ -232,7 +233,7 @@ export function GeoTable<T extends { id: string; status?: string }>({
                   >
                     {pageNum}
                   </Button>
-                );
+                )
               })}
             </div>
             <Button
@@ -248,7 +249,7 @@ export function GeoTable<T extends { id: string; status?: string }>({
         </div>
       )}
     </div>
-  );
+  )
 }
 
 // Pre-configured columns for GeoSample
@@ -265,6 +266,6 @@ export const geoSampleColumns: Column<GeoSample>[] = [
   { key: 'cl_meq_l', label: 'Cl⁻', unit: 'meq/L', format: (v) => Number(v).toFixed(2) },
   { key: 'so4_meq_l', label: 'SO₄²⁻', unit: 'meq/L', format: (v) => Number(v).toFixed(2) },
   { key: 'hco3_meq_l', label: 'HCO₃⁻', unit: 'meq/L', format: (v) => Number(v).toFixed(2) },
-];
+]
 
-export default GeoTable;
+export default GeoTable

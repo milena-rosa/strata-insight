@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import {
-  FolderKanban,
-  FileText,
-  Settings,
-  Menu,
-  ChevronDown,
   Building2,
-  Plus,
-  Layers,
+  ChevronDown,
+  FileText,
+  FolderKanban,
   HelpCircle,
+  Layers,
   LogOut,
-} from 'lucide-react';
-import { NavLink } from '@/components/NavLink';
-import { Button } from '@/components/ui/button';
+  Menu,
+  Plus,
+  Settings,
+} from 'lucide-react'
+import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { NavLink } from '@/components/NavLink'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,24 +21,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
-import { mockTenants, mockProjects } from '@/data/mockData';
+} from '@/components/ui/dropdown-menu'
+import { mockProjects, mockTenants } from '@/data/mockData'
+import { cn } from '@/lib/utils'
 
 interface AppLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const navigation = [
   { name: 'Projetos', href: '/projects', icon: FolderKanban },
   { name: 'Normas Técnicas', href: '/standards', icon: FileText },
   { name: 'Configurações', href: '/settings', icon: Settings },
-];
+]
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [selectedTenant, setSelectedTenant] = useState(mockTenants[0]);
-  const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [selectedTenant, setSelectedTenant] = useState(mockTenants[0])
+  const location = useLocation()
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -46,7 +46,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <aside
         className={cn(
           'sticky top-0 h-screen flex-shrink-0 border-r border-sidebar-border bg-sidebar transition-all duration-300',
-          sidebarCollapsed ? 'w-16' : 'w-64'
+          sidebarCollapsed ? 'w-16' : 'w-64',
         )}
       >
         <div className="flex h-full flex-col">
@@ -95,9 +95,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     <DropdownMenuItem
                       key={tenant.id}
                       onClick={() => setSelectedTenant(tenant)}
-                      className={cn(
-                        tenant.id === selectedTenant.id && 'bg-accent'
-                      )}
+                      className={cn(tenant.id === selectedTenant.id && 'bg-accent')}
                     >
                       <Building2 className="mr-2 h-4 w-4" />
                       <span className="truncate">{tenant.name}</span>
@@ -116,7 +114,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           {/* Navigation */}
           <nav className="flex-1 space-y-1 p-3" aria-label="Navegação principal">
             {navigation.map((item) => {
-              const isActive = location.pathname.startsWith(item.href);
+              const isActive = location.pathname.startsWith(item.href)
               return (
                 <NavLink
                   key={item.name}
@@ -124,14 +122,14 @@ export function AppLayout({ children }: AppLayoutProps) {
                   className={cn(
                     'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                     'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-                    isActive && 'bg-sidebar-accent text-sidebar-primary'
+                    isActive && 'bg-sidebar-accent text-sidebar-primary',
                   )}
                   activeClassName="bg-sidebar-accent text-sidebar-primary"
                 >
                   <item.icon className="h-5 w-5 flex-shrink-0" />
                   {!sidebarCollapsed && <span>{item.name}</span>}
                 </NavLink>
-              );
+              )
             })}
           </nav>
 
@@ -174,11 +172,9 @@ export function AppLayout({ children }: AppLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        {children}
-      </main>
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
-  );
+  )
 }
 
-export default AppLayout;
+export default AppLayout

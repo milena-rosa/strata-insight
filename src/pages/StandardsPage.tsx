@@ -1,18 +1,18 @@
-import { FileText, ExternalLink, Download, Search, Tag } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState } from 'react';
+import { Download, ExternalLink, FileText, Search, Tag } from 'lucide-react'
+import { useState } from 'react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 
 interface TechnicalStandard {
-  id: string;
-  code: string;
-  title: string;
-  description: string;
-  category: string;
-  year: number;
-  status: 'active' | 'revised' | 'superseded';
+  id: string
+  code: string
+  title: string
+  description: string
+  category: string
+  year: number
+  status: 'active' | 'revised' | 'superseded'
 }
 
 const standards: TechnicalStandard[] = [
@@ -47,7 +47,8 @@ const standards: TechnicalStandard[] = [
     id: '4',
     code: 'CETESB 195/2005',
     title: 'Valores Orientadores para Solo e Águas Subterrâneas',
-    description: 'Estabelece valores orientadores para proteção da qualidade do solo e águas subterrâneas no Estado de São Paulo.',
+    description:
+      'Estabelece valores orientadores para proteção da qualidade do solo e águas subterrâneas no Estado de São Paulo.',
     category: 'Contaminação',
     year: 2005,
     status: 'revised',
@@ -70,7 +71,7 @@ const standards: TechnicalStandard[] = [
     year: 2013,
     status: 'active',
   },
-];
+]
 
 const categoryColors: Record<string, string> = {
   Hidrogeologia: 'bg-strata-petroleum/20 text-strata-petroleum-light border-strata-petroleum/30',
@@ -78,27 +79,27 @@ const categoryColors: Record<string, string> = {
   Engenharia: 'bg-strata-amber/20 text-strata-amber border-strata-amber/30',
   Contaminação: 'bg-destructive/20 text-destructive border-destructive/30',
   Regulação: 'bg-secondary text-secondary-foreground border-secondary',
-};
+}
 
 const statusConfig = {
   active: { label: 'Vigente', className: 'bg-accent/20 text-accent' },
   revised: { label: 'Revisada', className: 'bg-strata-amber/20 text-strata-amber' },
   superseded: { label: 'Substituída', className: 'bg-muted text-muted-foreground' },
-};
+}
 
 export function StandardsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  const categories = [...new Set(standards.map((s) => s.category))];
+  const categories = [...new Set(standards.map((s) => s.category))]
 
   const filteredStandards = standards.filter((standard) => {
     const matchesSearch =
       standard.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      standard.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || standard.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+      standard.title.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = !selectedCategory || standard.category === selectedCategory
+    return matchesSearch && matchesCategory
+  })
 
   return (
     <div className="flex flex-col">
@@ -107,9 +108,7 @@ export function StandardsPage() {
         <div className="flex h-16 items-center justify-between px-6">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Normas Técnicas</h1>
-            <p className="text-sm text-muted-foreground">
-              Base de conhecimento regulatório para análises
-            </p>
+            <p className="text-sm text-muted-foreground">Base de conhecimento regulatório para análises</p>
           </div>
         </div>
       </header>
@@ -166,14 +165,10 @@ export function StandardsPage() {
                 <CardTitle className="mt-4 text-base">
                   <span className="text-primary">{standard.code}</span>
                 </CardTitle>
-                <CardDescription className="line-clamp-2 text-foreground/80">
-                  {standard.title}
-                </CardDescription>
+                <CardDescription className="line-clamp-2 text-foreground/80">{standard.title}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {standard.description}
-                </p>
+                <p className="text-sm text-muted-foreground line-clamp-2">{standard.description}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <Badge variant="outline" className={categoryColors[standard.category]}>
                     <Tag className="mr-1 h-3 w-3" />
@@ -197,14 +192,12 @@ export function StandardsPage() {
           <div className="flex flex-col items-center justify-center py-16">
             <FileText className="h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">Nenhuma norma encontrada</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Tente ajustar os filtros de busca
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">Tente ajustar os filtros de busca</p>
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default StandardsPage;
+export default StandardsPage

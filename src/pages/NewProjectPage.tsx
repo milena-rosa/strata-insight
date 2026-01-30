@@ -1,72 +1,72 @@
-import { useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { FileUploadZone, SchemaMapper } from '@/components/ui-geo';
-import { useToast } from '@/hooks/use-toast';
-import { mockColumnMappings } from '@/data/mockData';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { FileUploadZone, SchemaMapper } from '@/components/ui-geo'
+import { mockColumnMappings } from '@/data/mockData'
+import { useToast } from '@/hooks/use-toast'
+import { cn } from '@/lib/utils'
 
-type Step = 'upload' | 'details' | 'mapping' | 'confirm';
+type Step = 'upload' | 'details' | 'mapping' | 'confirm'
 
 const steps: { id: Step; label: string }[] = [
   { id: 'upload', label: 'Upload' },
   { id: 'details', label: 'Detalhes' },
   { id: 'mapping', label: 'Mapeamento' },
   { id: 'confirm', label: 'Confirmar' },
-];
+]
 
 export function NewProjectPage() {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<Step>('upload');
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const [currentStep, setCurrentStep] = useState<Step>('upload')
+  const [projectName, setProjectName] = useState('')
+  const [projectDescription, setProjectDescription] = useState('')
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
 
-  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
+  const currentStepIndex = steps.findIndex((s) => s.id === currentStep)
 
   const handleNext = () => {
-    const nextIndex = currentStepIndex + 1;
+    const nextIndex = currentStepIndex + 1
     if (nextIndex < steps.length) {
-      setCurrentStep(steps[nextIndex].id);
+      setCurrentStep(steps[nextIndex].id)
     }
-  };
+  }
 
   const handleBack = () => {
-    const prevIndex = currentStepIndex - 1;
+    const prevIndex = currentStepIndex - 1
     if (prevIndex >= 0) {
-      setCurrentStep(steps[prevIndex].id);
+      setCurrentStep(steps[prevIndex].id)
     }
-  };
+  }
 
   const handleConfirm = () => {
     toast({
       title: 'Projeto criado com sucesso!',
       description: 'Iniciando processamento dos dados...',
-    });
+    })
     setTimeout(() => {
-      navigate('/projects/proj-001/analysis');
-    }, 1000);
-  };
+      navigate('/projects/proj-001/analysis')
+    }, 1000)
+  }
 
   const canProceed = () => {
     switch (currentStep) {
       case 'upload':
-        return uploadedFiles.length > 0;
+        return uploadedFiles.length > 0
       case 'details':
-        return projectName.trim().length > 0;
+        return projectName.trim().length > 0
       case 'mapping':
-        return true;
+        return true
       case 'confirm':
-        return true;
+        return true
       default:
-        return false;
+        return false
     }
-  };
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -90,9 +90,9 @@ export function NewProjectPage() {
         <div className="mx-auto max-w-3xl">
           <nav aria-label="Progresso" className="flex items-center justify-between">
             {steps.map((step, index) => {
-              const isCompleted = index < currentStepIndex;
-              const isCurrent = step.id === currentStep;
-              
+              const isCompleted = index < currentStepIndex
+              const isCurrent = step.id === currentStep
+
               return (
                 <div key={step.id} className="flex items-center">
                   <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export function NewProjectPage() {
                         'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors',
                         isCompleted && 'bg-accent text-accent-foreground',
                         isCurrent && 'bg-primary text-primary-foreground',
-                        !isCompleted && !isCurrent && 'bg-muted text-muted-foreground'
+                        !isCompleted && !isCurrent && 'bg-muted text-muted-foreground',
                       )}
                     >
                       {isCompleted ? <CheckCircle className="h-4 w-4" /> : index + 1}
@@ -110,22 +110,17 @@ export function NewProjectPage() {
                       className={cn(
                         'text-sm font-medium',
                         isCurrent && 'text-foreground',
-                        !isCurrent && 'text-muted-foreground'
+                        !isCurrent && 'text-muted-foreground',
                       )}
                     >
                       {step.label}
                     </span>
                   </div>
                   {index < steps.length - 1 && (
-                    <div
-                      className={cn(
-                        'mx-4 h-0.5 w-16',
-                        index < currentStepIndex ? 'bg-accent' : 'bg-border'
-                      )}
-                    />
+                    <div className={cn('mx-4 h-0.5 w-16', index < currentStepIndex ? 'bg-accent' : 'bg-border')} />
                   )}
                 </div>
-              );
+              )
             })}
           </nav>
         </div>
@@ -142,9 +137,7 @@ export function NewProjectPage() {
                   Selecione os arquivos CSV ou Excel com seus dados geológicos
                 </p>
               </div>
-              <FileUploadZone
-                onUploadComplete={(files) => setUploadedFiles(files)}
-              />
+              <FileUploadZone onUploadComplete={(files) => setUploadedFiles(files)} />
             </div>
           )}
 
@@ -152,9 +145,7 @@ export function NewProjectPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-semibold">Detalhes do Projeto</h2>
-                <p className="text-sm text-muted-foreground">
-                  Preencha as informações básicas do projeto
-                </p>
+                <p className="text-sm text-muted-foreground">Preencha as informações básicas do projeto</p>
               </div>
               <div className="strata-card p-6 space-y-4">
                 <div className="space-y-2">
@@ -184,14 +175,9 @@ export function NewProjectPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-semibold">Mapeamento de Schema</h2>
-                <p className="text-sm text-muted-foreground">
-                  Confirme o mapeamento automático das colunas
-                </p>
+                <p className="text-sm text-muted-foreground">Confirme o mapeamento automático das colunas</p>
               </div>
-              <SchemaMapper
-                mappings={mockColumnMappings}
-                onConfirm={() => handleNext()}
-              />
+              <SchemaMapper mappings={mockColumnMappings} onConfirm={() => handleNext()} />
             </div>
           )}
 
@@ -199,9 +185,7 @@ export function NewProjectPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-semibold">Confirmar e Processar</h2>
-                <p className="text-sm text-muted-foreground">
-                  Revise as informações antes de iniciar o processamento
-                </p>
+                <p className="text-sm text-muted-foreground">Revise as informações antes de iniciar o processamento</p>
               </div>
               <div className="strata-card p-6 space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -220,8 +204,8 @@ export function NewProjectPage() {
                 </div>
                 <div className="rounded-lg bg-muted/30 p-4">
                   <p className="text-sm text-muted-foreground">
-                    Ao confirmar, seus dados serão processados automaticamente pelo sistema de IA.
-                    Isso pode levar alguns minutos dependendo do volume de dados.
+                    Ao confirmar, seus dados serão processados automaticamente pelo sistema de IA. Isso pode levar
+                    alguns minutos dependendo do volume de dados.
                   </p>
                 </div>
               </div>
@@ -233,15 +217,11 @@ export function NewProjectPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-background px-6 py-4">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <Button
-            variant="outline"
-            onClick={handleBack}
-            disabled={currentStepIndex === 0}
-          >
+          <Button variant="outline" onClick={handleBack} disabled={currentStepIndex === 0}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Voltar
           </Button>
-          
+
           {currentStep === 'confirm' ? (
             <Button onClick={handleConfirm}>
               <CheckCircle className="mr-2 h-4 w-4" />
@@ -261,7 +241,7 @@ export function NewProjectPage() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
 
-export default NewProjectPage;
+export default NewProjectPage

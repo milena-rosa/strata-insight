@@ -1,47 +1,47 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Database, BarChart3, FileText, Download, RefreshCw, Share2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
-import { DataPlotter, AnalysisCard, GeoTable, geoSampleColumns } from '@/components/ui-geo';
-import { mockPiperAnalysis, mockSampleData, mockProjects } from '@/data/mockData';
-import { useToast } from '@/hooks/use-toast';
+import { ArrowLeft, BarChart3, Database, Download, FileText, RefreshCw, Share2 } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { AnalysisCard, DataPlotter, GeoTable, geoSampleColumns } from '@/components/ui-geo'
+import { mockPiperAnalysis, mockProjects, mockSampleData } from '@/data/mockData'
+import { useToast } from '@/hooks/use-toast'
 
 export function ProjectAnalysisPage() {
-  const { id } = useParams<{ id: string }>();
-  const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('charts');
-  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams<{ id: string }>()
+  const { toast } = useToast()
+  const [activeTab, setActiveTab] = useState('charts')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const project = mockProjects.find((p) => p.id === id);
-  const analysis = mockPiperAnalysis;
+  const project = mockProjects.find((p) => p.id === id)
+  const analysis = mockPiperAnalysis
 
   const handleRefresh = () => {
-    setIsLoading(true);
+    setIsLoading(true)
     setTimeout(() => {
-      setIsLoading(false);
+      setIsLoading(false)
       toast({
         title: 'Análise atualizada',
         description: 'Os dados foram sincronizados com sucesso.',
-      });
-    }, 1500);
-  };
+      })
+    }, 1500)
+  }
 
   const handleExport = () => {
     toast({
       title: 'Exportação iniciada',
       description: 'O relatório será baixado em instantes.',
-    });
-  };
+    })
+  }
 
   if (!project) {
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-muted-foreground">Projeto não encontrado</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -106,9 +106,7 @@ export function ProjectAnalysisPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold">Dados Brutos</h2>
-                <p className="text-sm text-muted-foreground">
-                  Visualize e ordene os dados originais do seu dataset
-                </p>
+                <p className="text-sm text-muted-foreground">Visualize e ordene os dados originais do seu dataset</p>
               </div>
             </div>
             <GeoTable
@@ -120,7 +118,7 @@ export function ProjectAnalysisPage() {
                 toast({
                   title: `Amostra ${row.sample_id}`,
                   description: `TDS: ${row.tds_mg_l} mg/L | pH: ${row.ph}`,
-                });
+                })
               }}
             />
           </TabsContent>
@@ -130,12 +128,10 @@ export function ProjectAnalysisPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold">Visualizações</h2>
-                <p className="text-sm text-muted-foreground">
-                  Diagramas e gráficos gerados automaticamente
-                </p>
+                <p className="text-sm text-muted-foreground">Diagramas e gráficos gerados automaticamente</p>
               </div>
             </div>
-            
+
             {isLoading ? (
               <div className="grid gap-6 lg:grid-cols-2">
                 {Array.from({ length: 3 }).map((_, i) => (
@@ -148,19 +144,12 @@ export function ProjectAnalysisPage() {
             ) : (
               <div className="space-y-6">
                 {/* Piper Diagram - Full Width */}
-                <DataPlotter
-                  visualization={analysis.visualizations[0]}
-                  height={500}
-                />
-                
+                <DataPlotter visualization={analysis.visualizations[0]} height={500} />
+
                 {/* Secondary charts - Grid */}
                 <div className="grid gap-6 lg:grid-cols-2">
                   {analysis.visualizations.slice(1).map((viz, index) => (
-                    <DataPlotter
-                      key={index}
-                      visualization={viz}
-                      height={350}
-                    />
+                    <DataPlotter key={index} visualization={viz} height={350} />
                   ))}
                 </div>
               </div>
@@ -177,15 +166,12 @@ export function ProjectAnalysisPage() {
                 </p>
               </div>
             </div>
-            <AnalysisCard
-              interpretation={analysis.ai_interpretation}
-              isLoading={isLoading}
-            />
+            <AnalysisCard interpretation={analysis.ai_interpretation} isLoading={isLoading} />
           </TabsContent>
         </Tabs>
       </div>
     </div>
-  );
+  )
 }
 
-export default ProjectAnalysisPage;
+export default ProjectAnalysisPage

@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { useMemo } from 'react';
-import Plot from 'react-plotly.js';
-import type { Data, Layout } from 'plotly.js';
-import { Skeleton } from '@/components/ui/skeleton';
-import type { Visualization, PiperPayload, ScatterPayload, BarPayload, TrilinearData } from '@/data/mockData';
+import type { Data, Layout } from 'plotly.js'
+import { useMemo } from 'react'
+import Plot from 'react-plotly.js'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { BarPayload, PiperPayload, ScatterPayload, TrilinearData, Visualization } from '@/data/mockData'
 
 interface DataPlotterProps {
-  visualization: Visualization;
-  isLoading?: boolean;
-  height?: number;
-  className?: string;
+  visualization: Visualization
+  isLoading?: boolean
+  height?: number
+  className?: string
 }
 
 const CHART_COLORS = {
@@ -19,7 +19,7 @@ const CHART_COLORS = {
   tertiary: 'hsl(40, 80%, 55%)',
   quaternary: 'hsl(280, 50%, 50%)',
   quinary: 'hsl(15, 70%, 55%)',
-};
+}
 
 const CHART_LAYOUT_BASE: Partial<Layout> = {
   paper_bgcolor: 'transparent',
@@ -34,23 +34,23 @@ const CHART_LAYOUT_BASE: Partial<Layout> = {
     bgcolor: 'rgba(0,0,0,0)',
     font: { color: 'hsl(210, 20%, 75%)' },
   },
-};
+}
 
 export function DataPlotter({ visualization, isLoading = false, height = 400, className = '' }: DataPlotterProps) {
   const { data, layout } = useMemo(() => {
     switch (visualization.type) {
       case 'piper':
-        return buildPiperChart(visualization.payload as PiperPayload, visualization.title);
+        return buildPiperChart(visualization.payload as PiperPayload, visualization.title)
       case 'scatter':
-        return buildScatterChart(visualization.payload as ScatterPayload, visualization.title);
+        return buildScatterChart(visualization.payload as ScatterPayload, visualization.title)
       case 'bar':
-        return buildBarChart(visualization.payload as BarPayload, visualization.title);
+        return buildBarChart(visualization.payload as BarPayload, visualization.title)
       case 'ternary':
-        return buildTernaryChart(visualization.payload as TrilinearData, visualization.title);
+        return buildTernaryChart(visualization.payload as TrilinearData, visualization.title)
       default:
-        return { data: [], layout: {} };
+        return { data: [], layout: {} }
     }
-  }, [visualization]);
+  }, [visualization])
 
   if (isLoading) {
     return (
@@ -58,7 +58,7 @@ export function DataPlotter({ visualization, isLoading = false, height = 400, cl
         <Skeleton className="h-6 w-48 mb-4" />
         <Skeleton className="w-full" style={{ height: height - 40 }} />
       </div>
-    );
+    )
   }
 
   return (
@@ -81,7 +81,7 @@ export function DataPlotter({ visualization, isLoading = false, height = 400, cl
         useResizeHandler
       />
     </div>
-  );
+  )
 }
 
 function buildScatterChart(payload: ScatterPayload, title: string): { data: Data[]; layout: Partial<Layout> } {
@@ -99,20 +99,20 @@ function buildScatterChart(payload: ScatterPayload, title: string): { data: Data
       },
       hovertemplate: '<b>%{text}</b><br>' + payload.x_label + ': %{x}<br>' + payload.y_label + ': %{y}<extra></extra>',
     },
-  ];
+  ]
 
   // Add trend line
-  const n = payload.x.length;
-  const sumX = payload.x.reduce((a, b) => a + b, 0);
-  const sumY = payload.y.reduce((a, b) => a + b, 0);
-  const sumXY = payload.x.reduce((acc, x, i) => acc + x * payload.y[i], 0);
-  const sumXX = payload.x.reduce((acc, x) => acc + x * x, 0);
-  const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-  const intercept = (sumY - slope * sumX) / n;
-  
-  const xMin = Math.min(...payload.x);
-  const xMax = Math.max(...payload.x);
-  
+  const n = payload.x.length
+  const sumX = payload.x.reduce((a, b) => a + b, 0)
+  const sumY = payload.y.reduce((a, b) => a + b, 0)
+  const sumXY = payload.x.reduce((acc, x, i) => acc + x * payload.y[i], 0)
+  const sumXX = payload.x.reduce((acc, x) => acc + x * x, 0)
+  const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX)
+  const intercept = (sumY - slope * sumX) / n
+
+  const xMin = Math.min(...payload.x)
+  const xMax = Math.max(...payload.x)
+
   data.push({
     type: 'scatter',
     mode: 'lines',
@@ -121,7 +121,7 @@ function buildScatterChart(payload: ScatterPayload, title: string): { data: Data
     line: { color: CHART_COLORS.secondary, width: 2, dash: 'dash' },
     name: 'Tendência',
     hoverinfo: 'skip',
-  });
+  })
 
   return {
     data,
@@ -138,15 +138,15 @@ function buildScatterChart(payload: ScatterPayload, title: string): { data: Data
         zerolinecolor: 'hsl(215, 20%, 25%)',
       },
     },
-  };
+  }
 }
 
 function buildBarChart(payload: BarPayload, title: string): { data: Data[]; layout: Partial<Layout> } {
   const colors = payload.values.map((v, i) => {
-    const maxVal = Math.max(...payload.values);
-    const threshold = maxVal * 0.8;
-    return v > threshold ? CHART_COLORS.tertiary : CHART_COLORS.primary;
-  });
+    const maxVal = Math.max(...payload.values)
+    const threshold = maxVal * 0.8
+    return v > threshold ? CHART_COLORS.tertiary : CHART_COLORS.primary
+  })
 
   const data: Data[] = [
     {
@@ -159,7 +159,7 @@ function buildBarChart(payload: BarPayload, title: string): { data: Data[]; layo
       },
       hovertemplate: '<b>%{x}</b><br>' + payload.value_label + ': %{y}<extra></extra>',
     },
-  ];
+  ]
 
   return {
     data,
@@ -176,7 +176,7 @@ function buildBarChart(payload: BarPayload, title: string): { data: Data[]; layo
       },
       showlegend: false,
     },
-  };
+  }
 }
 
 function buildTernaryChart(payload: TrilinearData, title: string): { data: Data[]; layout: Partial<Layout> } {
@@ -193,7 +193,7 @@ function buildTernaryChart(payload: TrilinearData, title: string): { data: Data[
         line: { color: 'hsl(195, 55%, 60%)', width: 1 },
       },
     },
-  ];
+  ]
 
   return {
     data,
@@ -206,7 +206,7 @@ function buildTernaryChart(payload: TrilinearData, title: string): { data: Data[
         bgcolor: 'transparent',
       },
     },
-  };
+  }
 }
 
 function buildPiperChart(payload: PiperPayload, title: string): { data: Data[]; layout: Partial<Layout> } {
@@ -227,7 +227,7 @@ function buildPiperChart(payload: PiperPayload, title: string): { data: Data[]; 
     },
     name: 'Cátions',
     hovertemplate: '<b>%{text}</b><br>Ca: %{a}%<br>Mg: %{b}%<br>Na+K: %{c}%<extra></extra>',
-  };
+  }
 
   const anionData: Data = {
     type: 'scatterternary',
@@ -245,7 +245,7 @@ function buildPiperChart(payload: PiperPayload, title: string): { data: Data[]; 
     name: 'Ânions',
     hovertemplate: '<b>%{text}</b><br>Cl: %{a}%<br>SO4: %{b}%<br>HCO3+CO3: %{c}%<extra></extra>',
     subplot: 'ternary2',
-  };
+  }
 
   return {
     data: [cationData, anionData],
@@ -303,11 +303,27 @@ function buildPiperChart(payload: PiperPayload, title: string): { data: Data[]; 
       },
       grid: { rows: 1, columns: 2, pattern: 'independent' },
       annotations: [
-        { text: 'Diagrama Catiônico', x: 0.2, y: 1.1, xref: 'paper', yref: 'paper', showarrow: false, font: { size: 12, color: 'hsl(210, 20%, 75%)' } },
-        { text: 'Diagrama Aniônico', x: 0.8, y: 1.1, xref: 'paper', yref: 'paper', showarrow: false, font: { size: 12, color: 'hsl(210, 20%, 75%)' } },
+        {
+          text: 'Diagrama Catiônico',
+          x: 0.2,
+          y: 1.1,
+          xref: 'paper',
+          yref: 'paper',
+          showarrow: false,
+          font: { size: 12, color: 'hsl(210, 20%, 75%)' },
+        },
+        {
+          text: 'Diagrama Aniônico',
+          x: 0.8,
+          y: 1.1,
+          xref: 'paper',
+          yref: 'paper',
+          showarrow: false,
+          font: { size: 12, color: 'hsl(210, 20%, 75%)' },
+        },
       ],
     },
-  };
+  }
 }
 
-export default DataPlotter;
+export default DataPlotter

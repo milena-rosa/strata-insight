@@ -1,13 +1,13 @@
-import ReactMarkdown from 'react-markdown';
-import { AlertCircle, BookOpen, CheckCircle, Lightbulb, TrendingUp } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import type { AIInterpretation } from '@/data/mockData';
+import { AlertCircle, BookOpen, CheckCircle, Lightbulb, TrendingUp } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { AIInterpretation } from '@/data/mockData'
 
 interface AnalysisCardProps {
-  interpretation: AIInterpretation;
-  isLoading?: boolean;
-  className?: string;
+  interpretation: AIInterpretation
+  isLoading?: boolean
+  className?: string
 }
 
 export function AnalysisCard({ interpretation, isLoading = false, className = '' }: AnalysisCardProps) {
@@ -26,7 +26,7 @@ export function AnalysisCard({ interpretation, isLoading = false, className = ''
           <Skeleton className="h-4 w-3/4" />
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -44,8 +44,8 @@ export function AnalysisCard({ interpretation, isLoading = false, className = ''
             </div>
           </div>
           {interpretation.confidence && (
-            <Badge 
-              variant="outline" 
+            <Badge
+              variant="outline"
               className="border-accent text-accent"
               aria-label={`Confiança: ${Math.round(interpretation.confidence * 100)}%`}
             >
@@ -80,27 +80,13 @@ export function AnalysisCard({ interpretation, isLoading = false, className = ''
         <div className="prose prose-invert prose-sm max-w-none" role="region" aria-label="Resumo da análise">
           <ReactMarkdown
             components={{
-              h2: ({ children }) => (
-                <h2 className="mt-0 mb-4 text-lg font-semibold text-foreground">{children}</h2>
-              ),
-              h3: ({ children }) => (
-                <h3 className="mt-4 mb-2 text-base font-medium text-foreground">{children}</h3>
-              ),
-              p: ({ children }) => (
-                <p className="text-muted-foreground leading-relaxed">{children}</p>
-              ),
-              strong: ({ children }) => (
-                <strong className="font-semibold text-strata-amber">{children}</strong>
-              ),
-              ul: ({ children }) => (
-                <ul className="my-3 space-y-1">{children}</ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="my-3 space-y-1 list-decimal list-inside">{children}</ol>
-              ),
-              li: ({ children }) => (
-                <li className="text-muted-foreground">{children}</li>
-              ),
+              h2: ({ children }) => <h2 className="mt-0 mb-4 text-lg font-semibold text-foreground">{children}</h2>,
+              h3: ({ children }) => <h3 className="mt-4 mb-2 text-base font-medium text-foreground">{children}</h3>,
+              p: ({ children }) => <p className="text-muted-foreground leading-relaxed">{children}</p>,
+              strong: ({ children }) => <strong className="font-semibold text-strata-amber">{children}</strong>,
+              ul: ({ children }) => <ul className="my-3 space-y-1">{children}</ul>,
+              ol: ({ children }) => <ol className="my-3 space-y-1 list-decimal list-inside">{children}</ol>,
+              li: ({ children }) => <li className="text-muted-foreground">{children}</li>,
             }}
           >
             {interpretation.summary}
@@ -116,11 +102,7 @@ export function AnalysisCard({ interpretation, isLoading = false, className = ''
             </h4>
             <div className="flex flex-wrap gap-2">
               {interpretation.citations.map((citation, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
-                  className="text-xs font-normal"
-                >
+                <Badge key={index} variant="secondary" className="text-xs font-normal">
                   {citation}
                 </Badge>
               ))}
@@ -137,7 +119,7 @@ export function AnalysisCard({ interpretation, isLoading = false, className = ''
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-export default AnalysisCard;
+export default AnalysisCard

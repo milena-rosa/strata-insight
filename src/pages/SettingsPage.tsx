@@ -1,11 +1,11 @@
-import { User, Bell, Shield, Palette, Database, CreditCard, Building2, Users } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Bell, Building2, CreditCard, Database, Palette, Shield, User, Users } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export function SettingsPage() {
   return (
@@ -15,9 +15,7 @@ export function SettingsPage() {
         <div className="flex h-16 items-center px-6">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Configurações</h1>
-            <p className="text-sm text-muted-foreground">
-              Gerencie as configurações da sua conta e organização
-            </p>
+            <p className="text-sm text-muted-foreground">Gerencie as configurações da sua conta e organização</p>
           </div>
         </div>
       </header>
@@ -49,9 +47,7 @@ export function SettingsPage() {
             <Card className="strata-card">
               <CardHeader>
                 <CardTitle>Informações Pessoais</CardTitle>
-                <CardDescription>
-                  Atualize suas informações de perfil
-                </CardDescription>
+                <CardDescription>Atualize suas informações de perfil</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -83,9 +79,7 @@ export function SettingsPage() {
                   <Palette className="h-5 w-5" />
                   Preferências de Interface
                 </CardTitle>
-                <CardDescription>
-                  Personalize a aparência do sistema
-                </CardDescription>
+                <CardDescription>Personalize a aparência do sistema</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -101,9 +95,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Animações</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Habilita animações e transições
-                    </p>
+                    <p className="text-sm text-muted-foreground">Habilita animações e transições</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -116,9 +108,7 @@ export function SettingsPage() {
             <Card className="strata-card">
               <CardHeader>
                 <CardTitle>Dados da Organização</CardTitle>
-                <CardDescription>
-                  Informações da sua empresa ou instituição
-                </CardDescription>
+                <CardDescription>Informações da sua empresa ou instituição</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -142,17 +132,13 @@ export function SettingsPage() {
                   <Users className="h-5 w-5" />
                   Membros da Equipe
                 </CardTitle>
-                <CardDescription>
-                  Gerencie os usuários da sua organização
-                </CardDescription>
+                <CardDescription>Gerencie os usuários da sua organização</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8">
                   <Users className="h-12 w-12 text-muted-foreground mx-auto" />
                   <h3 className="mt-4 text-sm font-medium">Gerenciamento de equipe</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Disponível no plano Professional
-                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">Disponível no plano Professional</p>
                   <Button className="mt-4" variant="outline">
                     Fazer Upgrade
                   </Button>
@@ -166,17 +152,13 @@ export function SettingsPage() {
             <Card className="strata-card">
               <CardHeader>
                 <CardTitle>Preferências de Notificação</CardTitle>
-                <CardDescription>
-                  Configure como você deseja receber alertas
-                </CardDescription>
+                <CardDescription>Configure como você deseja receber alertas</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Análise Concluída</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Notificar quando uma análise for processada
-                    </p>
+                    <p className="text-sm text-muted-foreground">Notificar quando uma análise for processada</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -184,9 +166,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Anomalias Detectadas</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Alertas sobre valores fora dos limites normativos
-                    </p>
+                    <p className="text-sm text-muted-foreground">Alertas sobre valores fora dos limites normativos</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -194,9 +174,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Atualizações de Normas</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Notificar sobre alterações em normas técnicas
-                    </p>
+                    <p className="text-sm text-muted-foreground">Notificar sobre alterações em normas técnicas</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -204,9 +182,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Semanal</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Resumo semanal das atividades
-                    </p>
+                    <p className="text-sm text-muted-foreground">Resumo semanal das atividades</p>
                   </div>
                   <Switch />
                 </div>
@@ -219,17 +195,13 @@ export function SettingsPage() {
             <Card className="strata-card">
               <CardHeader>
                 <CardTitle>Segurança da Conta</CardTitle>
-                <CardDescription>
-                  Proteja sua conta com recursos adicionais de segurança
-                </CardDescription>
+                <CardDescription>Proteja sua conta com recursos adicionais de segurança</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Autenticação em Duas Etapas</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Adicione uma camada extra de segurança
-                    </p>
+                    <p className="text-sm text-muted-foreground">Adicione uma camada extra de segurança</p>
                   </div>
                   <Button variant="outline" size="sm">
                     Configurar
@@ -257,9 +229,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Exportar Dados</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Baixe uma cópia de todos os seus dados
-                    </p>
+                    <p className="text-sm text-muted-foreground">Baixe uma cópia de todos os seus dados</p>
                   </div>
                   <Button variant="outline" size="sm">
                     Exportar
@@ -269,9 +239,7 @@ export function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label className="text-destructive">Excluir Conta</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Remova permanentemente sua conta e dados
-                    </p>
+                    <p className="text-sm text-muted-foreground">Remova permanentemente sua conta e dados</p>
                   </div>
                   <Button variant="destructive" size="sm">
                     Excluir
@@ -283,7 +251,7 @@ export function SettingsPage() {
         </Tabs>
       </div>
     </div>
-  );
+  )
 }
 
-export default SettingsPage;
+export default SettingsPage

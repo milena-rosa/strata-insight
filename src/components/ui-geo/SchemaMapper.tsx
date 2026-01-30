@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { Check, AlertCircle, HelpCircle, Sparkles } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
-import type { ColumnMapping } from '@/data/mockData';
-import { geoParameters } from '@/data/mockData';
+import { AlertCircle, Check, HelpCircle, Sparkles } from 'lucide-react'
+import { useState } from 'react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import type { ColumnMapping } from '@/data/mockData'
+import { geoParameters } from '@/data/mockData'
+import { cn } from '@/lib/utils'
 
 interface SchemaMapperProps {
-  mappings: ColumnMapping[];
-  onMappingChange?: (originalColumn: string, geoParameter: string | null) => void;
-  onConfirm?: (mappings: ColumnMapping[]) => void;
-  isLoading?: boolean;
-  className?: string;
+  mappings: ColumnMapping[]
+  onMappingChange?: (originalColumn: string, geoParameter: string | null) => void
+  onConfirm?: (mappings: ColumnMapping[]) => void
+  isLoading?: boolean
+  className?: string
 }
 
 export function SchemaMapper({
@@ -24,41 +24,39 @@ export function SchemaMapper({
   isLoading = false,
   className = '',
 }: SchemaMapperProps) {
-  const [mappings, setMappings] = useState(initialMappings);
+  const [mappings, setMappings] = useState(initialMappings)
 
   const handleMappingChange = (originalColumn: string, geoParameter: string | null) => {
     setMappings((prev) =>
-      prev.map((m) =>
-        m.original_column === originalColumn ? { ...m, geo_parameter: geoParameter } : m
-      )
-    );
-    onMappingChange?.(originalColumn, geoParameter);
-  };
+      prev.map((m) => (m.original_column === originalColumn ? { ...m, geo_parameter: geoParameter } : m)),
+    )
+    onMappingChange?.(originalColumn, geoParameter)
+  }
 
   const getConfidenceBadge = (confidence: number) => {
     if (confidence >= 0.9) {
-      return <Badge className="bg-accent/20 text-accent border-accent/30">Alta</Badge>;
+      return <Badge className="bg-accent/20 text-accent border-accent/30">Alta</Badge>
     } else if (confidence >= 0.7) {
-      return <Badge className="bg-strata-amber/20 text-strata-amber border-strata-amber/30">Média</Badge>;
+      return <Badge className="bg-strata-amber/20 text-strata-amber border-strata-amber/30">Média</Badge>
     }
-    return <Badge className="bg-destructive/20 text-destructive border-destructive/30">Baixa</Badge>;
-  };
+    return <Badge className="bg-destructive/20 text-destructive border-destructive/30">Baixa</Badge>
+  }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'numeric':
-        return <span className="text-xs font-mono text-strata-petroleum-light">#</span>;
+        return <span className="text-xs font-mono text-strata-petroleum-light">#</span>
       case 'text':
-        return <span className="text-xs font-mono text-accent">Aa</span>;
+        return <span className="text-xs font-mono text-accent">Aa</span>
       case 'date':
-        return <span className="text-xs font-mono text-strata-amber">📅</span>;
+        return <span className="text-xs font-mono text-strata-amber">📅</span>
       default:
-        return <span className="text-xs font-mono text-muted-foreground">?</span>;
+        return <span className="text-xs font-mono text-muted-foreground">?</span>
     }
-  };
+  }
 
-  const unmappedCount = mappings.filter((m) => !m.geo_parameter).length;
-  const isComplete = unmappedCount === 0;
+  const unmappedCount = mappings.filter((m) => !m.geo_parameter).length
+  const isComplete = unmappedCount === 0
 
   if (isLoading) {
     return (
@@ -76,7 +74,7 @@ export function SchemaMapper({
           ))}
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -114,7 +112,7 @@ export function SchemaMapper({
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full" role="table" aria-label="Mapeamento de colunas">
+        <table className="w-full" aria-label="Mapeamento de colunas">
           <thead>
             <tr className="border-b border-border bg-muted/30">
               <th className="p-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -138,15 +136,10 @@ export function SchemaMapper({
             {mappings.map((mapping) => (
               <tr
                 key={mapping.original_column}
-                className={cn(
-                  'transition-colors hover:bg-muted/20',
-                  !mapping.geo_parameter && 'bg-strata-amber/5'
-                )}
+                className={cn('transition-colors hover:bg-muted/20', !mapping.geo_parameter && 'bg-strata-amber/5')}
               >
                 <td className="p-3">
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-sm">
-                    {mapping.original_column}
-                  </code>
+                  <code className="rounded bg-muted px-2 py-1 font-mono text-sm">{mapping.original_column}</code>
                 </td>
                 <td className="p-3 text-center">
                   <Tooltip>
@@ -172,21 +165,14 @@ export function SchemaMapper({
                     ))}
                   </div>
                 </td>
-                <td className="p-3 text-center">
-                  {getConfidenceBadge(mapping.confidence)}
-                </td>
+                <td className="p-3 text-center">{getConfidenceBadge(mapping.confidence)}</td>
                 <td className="p-3">
                   <Select
                     value={mapping.geo_parameter || ''}
-                    onValueChange={(value) =>
-                      handleMappingChange(mapping.original_column, value || null)
-                    }
+                    onValueChange={(value) => handleMappingChange(mapping.original_column, value || null)}
                   >
                     <SelectTrigger
-                      className={cn(
-                        'w-[220px]',
-                        !mapping.geo_parameter && 'border-strata-amber/50'
-                      )}
+                      className={cn('w-[220px]', !mapping.geo_parameter && 'border-strata-amber/50')}
                       aria-label={`Selecionar parâmetro para ${mapping.original_column}`}
                     >
                       <SelectValue placeholder="Selecione um parâmetro..." />
@@ -199,9 +185,7 @@ export function SchemaMapper({
                         <SelectItem key={param.value} value={param.value}>
                           <div className="flex items-center gap-2">
                             <span>{param.label}</span>
-                            {param.unit && (
-                              <span className="text-xs text-muted-foreground">({param.unit})</span>
-                            )}
+                            {param.unit && <span className="text-xs text-muted-foreground">({param.unit})</span>}
                           </div>
                         </SelectItem>
                       ))}
@@ -220,17 +204,13 @@ export function SchemaMapper({
           <HelpCircle className="h-4 w-4" />
           <span>O mapeamento pode ser ajustado manualmente para corrigir detecções automáticas.</span>
         </div>
-        <Button
-          onClick={() => onConfirm?.(mappings)}
-          disabled={!isComplete}
-          className="gap-2"
-        >
+        <Button onClick={() => onConfirm?.(mappings)} disabled={!isComplete} className="gap-2">
           <Check className="h-4 w-4" />
           Confirmar Mapeamento
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-export default SchemaMapper;
+export default SchemaMapper

@@ -1,33 +1,54 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, Search, Filter, FolderKanban, Clock, FlaskConical, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
-import { FileUploadZone } from '@/components/ui-geo';
-import { cn } from '@/lib/utils';
-import { mockProjects, type Project } from '@/data/mockData';
+import {
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Filter,
+  FlaskConical,
+  FolderKanban,
+  Loader2,
+  Plus,
+  Search,
+} from 'lucide-react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
+import { FileUploadZone } from '@/components/ui-geo'
+import { mockProjects, type Project } from '@/data/mockData'
+import { cn } from '@/lib/utils'
 
 const statusConfig = {
   draft: { label: 'Rascunho', icon: Clock, className: 'text-muted-foreground border-muted' },
-  processing: { label: 'Processando', icon: Loader2, className: 'text-strata-amber border-strata-amber/50 animate-pulse' },
+  processing: {
+    label: 'Processando',
+    icon: Loader2,
+    className: 'text-strata-amber border-strata-amber/50 animate-pulse',
+  },
   completed: { label: 'Concluído', icon: CheckCircle, className: 'text-accent border-accent/50' },
   error: { label: 'Erro', icon: AlertCircle, className: 'text-destructive border-destructive/50' },
-};
+}
 
 export function ProjectsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
-  const [isLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
+  const [isLoading] = useState(false)
 
   const filteredProjects = mockProjects.filter(
     (project) =>
       project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      project.description.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
 
   return (
     <div className="flex flex-col">
@@ -48,14 +69,12 @@ export function ProjectsPage() {
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Criar Novo Projeto</DialogTitle>
-                <DialogDescription>
-                  Faça upload de seus dados para iniciar uma nova análise geológica
-                </DialogDescription>
+                <DialogDescription>Faça upload de seus dados para iniciar uma nova análise geológica</DialogDescription>
               </DialogHeader>
               <div className="mt-4">
                 <FileUploadZone
                   onUploadComplete={(files) => {
-                    console.log('Files uploaded:', files);
+                    console.log('Files uploaded:', files)
                     // Navigate to schema mapping
                   }}
                 />
@@ -127,12 +146,12 @@ export function ProjectsPage() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
 function ProjectCard({ project }: { project: Project }) {
-  const status = statusConfig[project.status];
-  const StatusIcon = status.icon;
+  const status = statusConfig[project.status]
+  const StatusIcon = status.icon
 
   return (
     <Link to={`/projects/${project.id}/analysis`}>
@@ -165,7 +184,7 @@ function ProjectCard({ project }: { project: Project }) {
         </CardContent>
       </Card>
     </Link>
-  );
+  )
 }
 
-export default ProjectsPage;
+export default ProjectsPage
